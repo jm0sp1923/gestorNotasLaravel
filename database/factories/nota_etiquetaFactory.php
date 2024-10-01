@@ -7,7 +7,7 @@ use App\Models\Etiqueta;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
-class nota_etiquetaFactory extends Factory
+class Nota_etiquetaFactory extends Factory
 {
     protected $model = Nota_Etiqueta::class;
 

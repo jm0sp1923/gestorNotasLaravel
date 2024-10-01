@@ -6,7 +6,7 @@ use App\Models\Usuario;
 use Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class usuarioFactory extends Factory
+class UsuarioFactory extends Factory
 {
     protected $model = Usuario::class;
 

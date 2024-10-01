@@ -7,7 +7,7 @@ use App\Models\Nota;
 use App\Models\Usuario; // Asegúrate de incluir el modelo Usuario
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class notaFactory extends Factory
+class NotaFactory extends Factory
 {
     protected $model = Nota::class;
 
