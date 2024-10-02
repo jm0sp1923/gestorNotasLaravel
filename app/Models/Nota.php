@@ -30,8 +30,9 @@ class Nota extends Model
     }
 
     // Relación: Una nota pertenece a una etiqueta
-    public function etiqueta()
-    {
-        return $this->belongsTo(Etiqueta::class, 'etiqueta_id');
-    }
+    public function etiquetas()
+{
+    return $this->belongsToMany(Etiqueta::class, 'nota_etiqueta', 'nota_id', 'etiqueta_id')
+                ->withTimestamps();
+}
 }
