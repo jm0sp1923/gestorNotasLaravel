@@ -15,14 +15,17 @@ class UsuarioController extends Controller
     $usuario = Usuario::where('email', $credentials['email'])->first();
 
     try {
-        $loginSuccess = $usuario && Hash::check($credentials['password'], $usuario->password);
+        if (!$usuario) {
+            \Log::warning('Usuario no encontrado', ['email' => $credentials['email']]);
+            return response()->json(['error' => 'Error de credenciales'], 401);
+        }
+
+        $loginSuccess = Hash::check($credentials['password'], $usuario->password);
         if ($loginSuccess) {
-            $token = $usuario->createToken("tokenAcceso")->plainTextToken; // Cambia a plainTextToken
-            
-            return response()->json([
-                'token' => $token,
-                'user' => $usuario
-            ]);
+            $token = $usuario->createToken("tokenAcceso")->plainTextToken; 
+            return response()->json(['token' => $token, 'user' => $usuario]);
+        } else {
+            \Log::warning('Contraseña incorrecta', ['email' => $credentials['email']]);
         }
     } catch (\Exception $e) {
         \Log::error('Error al iniciar sesión', ['error' => $e->getMessage()]);
@@ -31,6 +34,7 @@ class UsuarioController extends Controller
 
     return response()->json(['error' => 'Error de credenciales'], 401);
 }
+
 
 
     public function index()
@@ -54,21 +58,32 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:usuarios',
-            'password' => 'required|string|min:6',
-        ]);
+        try {
+            // Validación de los datos
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:usuarios,email',
+                'password' => 'required|string|min:6', // 
+            ]);
 
-        $usuario = new Usuario();
-        $usuario->nombre = $request->nombre;
-        $usuario->email = $request->email;
-        // Cifrar la contraseña antes de guardarla
-        $usuario->password = Hash::make($request->password);
-        $usuario->save();
+            
+            // Crear la nueva nota
+            $usuario = new Usuario();
 
-        return response()->json(['mensaje' => 'Usuario registrado exitosamente'], 201);
+            $usuario->nombre = $request->nombre;
+            $usuario->email = $request->email;
+            $usuario->password = Hash::make($request->password);
+            $usuario->save();
+
+            return response()->json(['usuario' => $usuario, 'mensaje' => 'Usuario creado exitosamente'], 201);
+        }catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }   
     }
+
+
 
     public function show(string $id)
     {
@@ -93,31 +108,35 @@ class UsuarioController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validar los campos entrantes
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:usuarios,email,' . $id,
-            'password' => 'nullable|string|min:6', // 
-        ]);
+        try {
+            // Validar los campos entrantes
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:usuarios,email,' .$id,
+                'password' => 'nullable|string|min:6', // 
+            ]);
 
-        $usuario = Usuario::findOrFail($id);
-
-
-        $usuario->nombre = $request->nombre;
-        $usuario->email = $request->email;
+            $usuario = Usuario::findOrFail($id);
 
 
-        if ($request->filled('password')) {
+            $usuario->nombre = $request->nombre;
+            $usuario->email = $request->email;
 
-            $usuario->password = Hash::make($request->password);
+
+            if ($request->filled('password')) {
+
+                $usuario->password = Hash::make($request->password);
+            }
+
+            // Guardar los cambios
+            $usuario->save();
+
+            return response()->json(['mensaje' => 'Usuario actualizado exitosamente'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        // Guardar los cambios
-        $usuario->save();
-
-        return response()->json(['mensaje' => 'Usuario actualizado exitosamente'], 200);
     }
-    
+
     public function destroy(string $id)
     {
         $usu = Usuario::find($id);
@@ -144,7 +163,8 @@ class UsuarioController extends Controller
                 'status' => 404,
             ];
             return response()->json($data, 200);
-        };
+        }
+        ;
 
         $validator = Validator::make($request->all(), [
             'nombre' => 'string|max:255',
@@ -165,7 +185,7 @@ class UsuarioController extends Controller
             $usuario->nombre = $request->nombre;
         }
 
-  
+
         if ($request->has('email')) {
             $usuario->email = $request->email;
         }
@@ -177,9 +197,9 @@ class UsuarioController extends Controller
 
         $usuario->save();
         $data = [
-            'message'=> 'Usuario actulizado',
-            'usuario'=> $usuario,
-            'status'=> '200',
+            'message' => 'Usuario actulizado',
+            'usuario' => $usuario,
+            'status' => '200',
         ];
         return response()->json($data, 200);
     }

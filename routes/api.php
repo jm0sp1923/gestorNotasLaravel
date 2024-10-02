@@ -15,6 +15,7 @@ Route::delete("/usuario/{id}",[UsuarioController::class, 'destroy']);
 
 
 
+// Rutas protegidas por autenticación
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/nota', [NotasController::class, 'index']);
     Route::post('/nota', [NotasController::class, 'store']);
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/nota/{id}', [NotasController::class, 'updatePartial']);
     Route::delete("/nota/{id}", [NotasController::class, 'destroy']);
 });
+
 
 Route::get('/etiqueta',[EtiquetasController::class,'index']);
 Route::post('/etiqueta',[EtiquetasController::class,'store']);

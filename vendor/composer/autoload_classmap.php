@@ -10,6 +10,7 @@ return array(
     'App\\Http\\Controllers\\EtiquetasController' => $baseDir . '/app/Http/Controllers/EtiquetasController.php',
     'App\\Http\\Controllers\\NotasController' => $baseDir . '/app/Http/Controllers/NotasController.php',
     'App\\Http\\Controllers\\UsuarioController' => $baseDir . '/app/Http/Controllers/UsuarioController.php',
+    'App\\Http\\Middleware\\EnsureTokenIsValid' => $baseDir . '/app/Http/Middleware/EnsureTokenIsValid.php',
     'App\\Models\\Etiqueta' => $baseDir . '/app/Models/Etiqueta.php',
     'App\\Models\\Nota' => $baseDir . '/app/Models/Nota.php',
     'App\\Models\\Nota_Etiqueta' => $baseDir . '/app/Models/Nota_Etiqueta.php',

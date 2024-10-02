@@ -513,6 +513,7 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'App\\Http\\Controllers\\EtiquetasController' => __DIR__ . '/../..' . '/app/Http/Controllers/EtiquetasController.php',
         'App\\Http\\Controllers\\NotasController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotasController.php',
         'App\\Http\\Controllers\\UsuarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/UsuarioController.php',
+        'App\\Http\\Middleware\\EnsureTokenIsValid' => __DIR__ . '/../..' . '/app/Http/Middleware/EnsureTokenIsValid.php',
         'App\\Models\\Etiqueta' => __DIR__ . '/../..' . '/app/Models/Etiqueta.php',
         'App\\Models\\Nota' => __DIR__ . '/../..' . '/app/Models/Nota.php',
         'App\\Models\\Nota_Etiqueta' => __DIR__ . '/../..' . '/app/Models/Nota_Etiqueta.php',
