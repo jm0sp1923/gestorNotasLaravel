@@ -145,7 +145,7 @@ class UsuarioController extends Controller
         $usuario = Usuario::find($id);
         if (!$usuario) {
             $data = [
-                'message' => 'Estudiante no encotrado',
+                'message' => 'Usuario no encotrado',
                 'status' => 404,
             ];
             return response()->json($data, 200);
@@ -182,7 +182,7 @@ class UsuarioController extends Controller
 
         $usuario->save();
         $data = [
-            'message'=> 'Estduiante actulizado',
+            'message'=> 'Usuario actulizado',
             'usuario'=> $usuario,
             'status'=> '200',
         ];
