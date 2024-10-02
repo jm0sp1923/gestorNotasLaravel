@@ -35,6 +35,10 @@ class UsuarioController extends Controller
     return response()->json(['error' => 'Error de credenciales'], 401);
 }
 
+public function logout(Request $request){
+    
+}
+
 
 
     public function index()
