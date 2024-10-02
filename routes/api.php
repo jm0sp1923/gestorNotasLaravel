@@ -14,6 +14,7 @@ Route::patch('/usuario/{id}',[UsuarioController::class,'updatePartial']);
 Route::delete("/usuario/{id}",[UsuarioController::class, 'destroy']);
 
 
+
 Route::get('/nota',[NotasController::class,'index']);
 Route::post('/nota',[NotasController::class,'store']);
 Route::get("/nota/{id}",[NotasController::class, 'show']);

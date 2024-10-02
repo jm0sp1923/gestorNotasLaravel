@@ -10,29 +10,33 @@ class UsuarioController extends Controller
 {
 
     public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        $usuario = Usuario::where('email', $credentials['email'])->first();
+{
+    $credentials = $request->only('email', 'password');
+    $usuario = Usuario::where('email', $credentials['email'])->first();
 
+    \Log::info('Intento de inicio de sesión', ['credentials' => $credentials]);
 
-        //Credenciales buscadas
-        \Log::info('Intento de inicio de sesión', ['credentials' => $credentials]);
+    if ($usuario) {
+        \Log::info('Usuario encontrado', ['usuario' => $usuario]);
+    } else {
+        \Log::info('Usuario no encontrado');
+    } 
 
-
-
-        // Depuración
-        if ($usuario) {
-            \Log::info('Usuario encontrado', ['usuario' => $usuario]);
-        } else {
-            \Log::info('Usuario no encontrado');
-        }
-
+    try {
         $loginSuccess = $usuario && Hash::check($credentials['password'], $usuario->password);
         if ($loginSuccess) {
-            return response()->json(['user' => $usuario], 200);
+            $token = $usuario->createToken("tokenAcceso")->plainTextToken; // Cambia a plainTextToken
+            
+            return response()->json(['token' => $token], 200);
         }
-        return response()->json(['error' => 'Error de credenciales'], 401);
+    } catch (\Exception $e) {
+        \Log::error('Error al iniciar sesión', ['error' => $e->getMessage()]);
+        return response()->json(['error' => 'Error interno del servidor'], 500);
     }
+
+    return response()->json(['error' => 'Error de credenciales'], 401);
+}
+
 
     public function index()
     {
