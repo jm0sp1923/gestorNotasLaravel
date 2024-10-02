@@ -11,7 +11,7 @@ class NotasController extends Controller
     
     public function index()
     {
-        $nota = Nota::with(['usuario', 'etiqueta'])->get();
+        $nota = Nota::with(['usuario', 'etiquetas'])->get();
         if ($nota->isEmpty()) {
             $data = [
                 'message' => 'No se encontraron notas',
