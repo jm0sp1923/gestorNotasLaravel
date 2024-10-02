@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Nota extends Model
 {
-    use HasFactory;
+    use HasFactory; 
     
     // Definir la tabla asociada
     protected $table = 'notas';
