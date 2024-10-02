@@ -17,10 +17,8 @@ class Etiqueta extends Model
         'nombre',
     ];
 
-    // Relación: Una etiqueta puede pertenecer a muchas notas (relación muchos a muchos)
-    public function notes()
+    public function notas()
     {
-        return $this->belongsToMany(Nota::class, 'nota_etiqueta', 'etiqueta_id', 'nota_id')
-                    ->withTimestamps();
+        return $this->hasMany(Nota::class, 'etiqueta_id'); 
     }
 }
