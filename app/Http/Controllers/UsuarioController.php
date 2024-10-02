@@ -14,20 +14,15 @@ class UsuarioController extends Controller
     $credentials = $request->only('email', 'password');
     $usuario = Usuario::where('email', $credentials['email'])->first();
 
-    \Log::info('Intento de inicio de sesión', ['credentials' => $credentials]);
-
-    if ($usuario) {
-        \Log::info('Usuario encontrado', ['usuario' => $usuario]);
-    } else {
-        \Log::info('Usuario no encontrado');
-    } 
-
     try {
         $loginSuccess = $usuario && Hash::check($credentials['password'], $usuario->password);
         if ($loginSuccess) {
             $token = $usuario->createToken("tokenAcceso")->plainTextToken; // Cambia a plainTextToken
             
-            return response()->json(['token' => $token], 200);
+            return response()->json([
+                'token' => $token,
+                'user' => $usuario
+            ]);
         }
     } catch (\Exception $e) {
         \Log::error('Error al iniciar sesión', ['error' => $e->getMessage()]);

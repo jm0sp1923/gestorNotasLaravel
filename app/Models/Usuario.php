@@ -21,7 +21,7 @@ class Usuario extends Authenticable
         'password',
     ];  
 
-   
+    
     public function notas()
     {
         return $this->hasMany(Nota::class, 'usuario_id');
