@@ -16,3 +16,4 @@ class EtiquetaFactory extends Factory
         ];
     }
 }
+

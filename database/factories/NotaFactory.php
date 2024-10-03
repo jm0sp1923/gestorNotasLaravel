@@ -22,3 +22,4 @@ class NotaFactory extends Factory
         ];
     }
 }
+
