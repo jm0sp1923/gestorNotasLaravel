@@ -16,7 +16,6 @@ class UsuarioController extends Controller
 
     try {
         if (!$usuario) {
-            \Log::warning('Usuario no encontrado', ['email' => $credentials['email']]);
             return response()->json(['error' => 'Error de credenciales'], 401);
         }
 
@@ -24,11 +23,8 @@ class UsuarioController extends Controller
         if ($loginSuccess) {
             $token = $usuario->createToken("tokenAcceso")->plainTextToken; 
             return response()->json(['token' => $token, 'user' => $usuario]);
-        } else {
-            \Log::warning('Contraseña incorrecta', ['email' => $credentials['email']]);
-        }
+        } 
     } catch (\Exception $e) {
-        \Log::error('Error al iniciar sesión', ['error' => $e->getMessage()]);
         return response()->json(['error' => 'Error interno del servidor'], 500);
     }
 

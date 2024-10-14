@@ -78,7 +78,7 @@ class NotasController extends Controller
                 'titulo' => 'required|string|max:255',
                 'descripcion' => 'required|string',
                 'fecha_vencimiento' => 'nullable|date', // La fecha de vencimiento es opcional
-                'imagen' => 'nullable|image|max:2048', // La imagen es opcional
+                'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'usuario_id' => 'required|exists:usuarios,id', // Verificar que el usuario existe
                 'etiqueta_id' => 'required|exists:etiquetas,id', // Verificar que la etiqueta existe
             ]);
